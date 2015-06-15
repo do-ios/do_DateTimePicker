@@ -33,7 +33,6 @@
 @property(nonatomic,assign)int type;
 @property(nonatomic,weak) id <do_DateTimeViewDelegate>delegate;
 - (instancetype)initDateTimeView:(int)type withDate:(NSString *)date withMaxDate:(NSString *)maxDate withMinDate:(NSString *)minDate withTitle:(NSString *)title withLeftBtn:(NSString *)left withRightBtn:(NSString *)right;
-- (instancetype) initDateTimeView;
 + (instancetype) DataTime;
 - (long) getTime;
 @end

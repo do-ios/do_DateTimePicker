@@ -14,13 +14,6 @@
 @end
 @implementation do_DateTimeView
 
-- (instancetype)initDateTimeView
-{
-    if (self = [super init]) {
-//        self.frame = CGRectMake(0, 0, 0, 0);
-    }
-    return self;
-}
 - (instancetype)initDateTimeView:(int)type withDate:(NSString *)date withMaxDate:(NSString *)maxDate withMinDate:(NSString *)minDate withTitle:(NSString *)title withLeftBtn:(NSString *)left withRightBtn:(NSString *)right
 {
     if (self = [super init]) {
@@ -64,7 +57,7 @@
 - (void) setUpDateTimeView:(int)type
 {
     switch (type) {
-        case 1://日期和时间
+        case 0://日期和时间
         {
             //日期
             UIDatePicker *date = [[UIDatePicker alloc]init];
@@ -82,7 +75,7 @@
             self.timePicker = time;
         }
             break;
-        case 2://日期
+        case 1://日期
         {
             UIDatePicker *date = [[UIDatePicker alloc]init];
             date.frame = CGRectMake(0, self.frame.size.height / 3, self.frame.size.width, self.frame.size.height);
@@ -92,7 +85,7 @@
             self.datePicker = date;
         }
             break;
-        case 3://时间
+        case 2://时间
         {
             UIDatePicker *time = [[UIDatePicker alloc]init];
             time.frame = CGRectMake(0, self.frame.size.height / 3, self.frame.size.width, self.frame.size.height);
