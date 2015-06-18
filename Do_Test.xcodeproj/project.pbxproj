@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		3BDC12771B2A840700361C5F /* do_DateTimePicker_App.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BDC12731B2A840700361C5F /* do_DateTimePicker_App.m */; };
 		3BDC12781B2A840700361C5F /* do_DateTimePicker_SM.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BDC12761B2A840700361C5F /* do_DateTimePicker_SM.m */; };
-		3BDC12AD1B2AC9D000361C5F /* do_DateTimeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BDC12AC1B2AC9D000361C5F /* do_DateTimeView.m */; };
 		3BE9EA0B1B2E610F006043D2 /* do_DateTimePicker_App.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3BDC12721B2A840700361C5F /* do_DateTimePicker_App.h */; };
 		3BE9EA0C1B2E610F006043D2 /* do_DateTimePicker_ISM.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3BDC12741B2A840700361C5F /* do_DateTimePicker_ISM.h */; };
 		3BE9EA0D1B2E610F006043D2 /* do_DateTimePicker_SM.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3BDC12751B2A840700361C5F /* do_DateTimePicker_SM.h */; };
@@ -73,8 +72,6 @@
 		3BDC12741B2A840700361C5F /* do_DateTimePicker_ISM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = do_DateTimePicker_ISM.h; sourceTree = "<group>"; };
 		3BDC12751B2A840700361C5F /* do_DateTimePicker_SM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = do_DateTimePicker_SM.h; sourceTree = "<group>"; };
 		3BDC12761B2A840700361C5F /* do_DateTimePicker_SM.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = do_DateTimePicker_SM.m; sourceTree = "<group>"; };
-		3BDC12AB1B2AC9D000361C5F /* do_DateTimeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = do_DateTimeView.h; sourceTree = "<group>"; };
-		3BDC12AC1B2AC9D000361C5F /* do_DateTimeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = do_DateTimeView.m; sourceTree = "<group>"; };
 		A44BC66A1AEE005E001580AA /* Do_Test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Do_Test.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A44BC66E1AEE005E001580AA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A44BC66F1AEE005E001580AA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -95,7 +92,7 @@
 		A44BC69C1AEE008D001580AA /* doScriptEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = doScriptEngine.m; sourceTree = "<group>"; };
 		A44BC69D1AEE008D001580AA /* doService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = doService.h; sourceTree = "<group>"; };
 		A44BC69E1AEE008D001580AA /* doService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = doService.m; sourceTree = "<group>"; };
-		A44BC7B21AEE19CC001580AA /* libdoExtLib.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libdoExtLib.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		A44BC7B21AEE19CC001580AA /* libdoDateTimePicker.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libdoDateTimePicker.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4A1A01C1AF0F82B00D835A5 /* do_Test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = do_Test.json; sourceTree = "<group>"; };
 		CC1195AB1B147F7C00583148 /* doAssetLaunchImage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = doAssetLaunchImage.h; path = Header/doAssetLaunchImage.h; sourceTree = "<group>"; };
 		CC1195AC1B147F7C00583148 /* doCallBackTask.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = doCallBackTask.h; path = Header/doCallBackTask.h; sourceTree = "<group>"; };
@@ -239,7 +236,7 @@
 			isa = PBXGroup;
 			children = (
 				A44BC66A1AEE005E001580AA /* Do_Test.app */,
-				A44BC7B21AEE19CC001580AA /* libdoExtLib.a */,
+				A44BC7B21AEE19CC001580AA /* libdoDateTimePicker.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -366,8 +363,6 @@
 				3BDC12741B2A840700361C5F /* do_DateTimePicker_ISM.h */,
 				3BDC12751B2A840700361C5F /* do_DateTimePicker_SM.h */,
 				3BDC12761B2A840700361C5F /* do_DateTimePicker_SM.m */,
-				3BDC12AB1B2AC9D000361C5F /* do_DateTimeView.h */,
-				3BDC12AC1B2AC9D000361C5F /* do_DateTimeView.m */,
 				A4A1A01C1AF0F82B00D835A5 /* do_Test.json */,
 			);
 			path = doExtLib;
@@ -443,7 +438,7 @@
 			);
 			name = doExtLib;
 			productName = doExtLib;
-			productReference = A44BC7B21AEE19CC001580AA /* libdoExtLib.a */;
+			productReference = A44BC7B21AEE19CC001580AA /* libdoDateTimePicker.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -518,7 +513,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3BDC12AD1B2AC9D000361C5F /* do_DateTimeView.m in Sources */,
 				3BDC12771B2A840700361C5F /* do_DateTimePicker_App.m in Sources */,
 				3BDC12781B2A840700361C5F /* do_DateTimePicker_SM.m in Sources */,
 			);
@@ -661,7 +655,7 @@
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = doDateTimePicker;
 				SKIP_INSTALL = YES;
 				SYMROOT = build;
 			};
@@ -671,7 +665,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = doDateTimePicker;
 				SKIP_INSTALL = YES;
 				SYMROOT = build;
 			};
