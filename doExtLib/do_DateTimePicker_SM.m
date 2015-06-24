@@ -15,6 +15,7 @@
 #import "doIScriptEngine.h"
 #import "doIPage.h"
 #import <UIKit/UIKit.h>
+#import "doTextHelper.h"
 
 @interface do_DateTimePicker_SM()<UIAlertViewDelegate>
 @property (nonatomic,strong) UIDatePicker *tempDateView;
@@ -51,15 +52,13 @@
     NSString *title = [doJsonHelper GetOneText:_dictParas :@"title" :@""];
     title = [self getTitle:title withType:type];
     NSArray *buttons = [doJsonHelper GetOneArray:_dictParas :@"buttons"];
-    UIAlertView *alView = [[UIAlertView alloc]init];
-    //        self.tempAlView = alView;
-    alView.delegate = self;
-    alView.title = title;
-    alView = [self UIActionSheetShow:buttons withAlterView:alView];
-    UIView *suView = [self getAlterView:type withMaxDate:maxDate withMinDate:minDate];
-    [alView setValue:suView forKey:@"accessoryView"];
-
     dispatch_async(dispatch_get_main_queue(), ^{
+        UIAlertView *alView = [[UIAlertView alloc]init];
+        alView.delegate = self;
+        alView.title = title;
+        alView = [self UIActionSheetShow:buttons withAlterView:alView];
+        UIView *suView = [self getAlterView:type withMaxDate:maxDate withMinDate:minDate];
+        [alView setValue:suView forKey:@"accessoryView"];
         [alView show];
     });
 }
@@ -108,13 +107,12 @@
         case 0://日期和时间
         {
             supView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 340, 480)];
-            UIDatePicker *datePicker = [[UIDatePicker alloc]initWithFrame:CGRectMake(10, 10, 320, 216)];
-            self.tempDateView = datePicker;
-            datePicker = [self setDatePicker:datePicker withCurrentDate:self.currentDate withMinDate:minDate withMaxDate:maxDate];
-            datePicker.datePickerMode = UIDatePickerModeDate;
-            UIDatePicker *timePicker = [[UIDatePicker alloc]initWithFrame:CGRectMake(10, 226 , 320, 216)];
-            self.tempTimeView = timePicker;
-            timePicker.datePickerMode = UIDatePickerModeTime;
+            UIDatePicker *datePicker = [self createDate:self.currentDate withMinDate:minDate withMaxDate:maxDate];
+            [datePicker addTarget:self action:@selector(dateChanged:) forControlEvents:UIControlEventValueChanged];
+            datePicker.frame = CGRectMake(10, 10, 320, 216);
+            UIDatePicker *timePicker = [self createTime:self.currentDate withMinDate:minDate withMaxDate:maxDate];
+            [timePicker addTarget:self action:@selector(timeChanged:) forControlEvents:UIControlEventValueChanged];
+            timePicker.frame = CGRectMake(10, 226, 320, 216);
             [supView addSubview:datePicker];
             [supView addSubview:timePicker];
         }
@@ -122,20 +120,14 @@
         case 1://日期
         {
             supView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 340, 216)];
-            UIDatePicker *datePicker = [[UIDatePicker alloc]initWithFrame:CGRectMake(10, 0 , 320, 216)];
-            self.tempDateView = datePicker;
-            datePicker = [self setDatePicker:datePicker withCurrentDate:self.currentDate withMinDate:minDate withMaxDate:maxDate];
-            datePicker.datePickerMode = UIDatePickerModeDate;
+            UIDatePicker *datePicker = [self createDate:self.currentDate withMinDate:minDate withMaxDate:maxDate];
             [supView addSubview:datePicker];
         }
             break;
         case 2://时间
         {
             supView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 340, 216)];
-            UIDatePicker *timePicker = [[UIDatePicker alloc]initWithFrame:CGRectMake(10, 0, 320, 216)];
-            timePicker = [self setDatePicker:timePicker withCurrentDate:self.currentDate withMinDate:minDate withMaxDate:maxDate];
-            timePicker.datePickerMode = UIDatePickerModeTime;
-            self.tempDateView = timePicker;
+            UIDatePicker *timePicker = [self createDate:self.currentDate withMinDate:minDate withMaxDate:maxDate];
             [supView addSubview:timePicker];
         }
             break;
@@ -143,21 +135,14 @@
     return supView;
 }
 
-- (UIDatePicker *)setDatePicker:(UIDatePicker *)datePicker withCurrentDate:(NSString *)date withMinDate:(NSString *)minDate withMaxDate:(NSString *)maxDate
+- (void)dateChanged:(UIDatePicker *)sender
 {
-    if (date.length > 0) {
-        double currentDate = [date doubleValue];
-        datePicker.date = [NSDate dateWithTimeIntervalSince1970:currentDate];
-    }
-    if (minDate.length > 0) {
-        double min = [minDate doubleValue];
-        datePicker.minimumDate = [NSDate dateWithTimeIntervalSince1970:min];
-    }
-    if (maxDate.length > 0) {
-        double max = [maxDate doubleValue];
-        datePicker.maximumDate = [NSDate dateWithTimeIntervalSince1970:max];
-    }
-    return datePicker;
+    [self.tempTimeView setDate:sender.date animated:YES];
+}
+
+- (void)timeChanged:(UIDatePicker *)sender
+{
+    [self.tempDateView setDate:sender.date animated:YES];
 }
 
 - (long)getLongDateTime
@@ -171,6 +156,47 @@
     NSDate *date = [calendar dateFromComponents:dateCompt];
     return date.timeIntervalSince1970;
 }
+
+- (UIDatePicker *)createDate:(NSString *)date withMinDate:(NSString *)minDate withMaxDate:(NSString *)maxDate
+{
+    UIDatePicker *datePicker = [[UIDatePicker alloc]initWithFrame:CGRectMake(10, 10, 320, 216)];
+    datePicker.datePickerMode = UIDatePickerModeDate;
+    self.tempDateView = datePicker;
+    if (date.length > 0) {
+        
+        double currentDate = [[doTextHelper alloc]StrToLong:date :INT16_MAX];
+        datePicker.date = [NSDate dateWithTimeIntervalSince1970:currentDate / 1000];
+    }
+    if (minDate.length > 0) {
+        double min = [[doTextHelper alloc]StrToLong:minDate :INT16_MAX];
+        datePicker.minimumDate = [NSDate dateWithTimeIntervalSince1970:min / 1000];
+    }
+    if (maxDate.length > 0) {
+        double max = [[doTextHelper alloc]StrToLong:maxDate :INT16_MAX];
+        datePicker.maximumDate = [NSDate dateWithTimeIntervalSince1970:max / 1000];
+    }
+    return datePicker;
+}
+- (UIDatePicker *)createTime:(NSString *)date withMinDate:(NSString *)minDate withMaxDate:(NSString *)maxDate
+{
+    UIDatePicker *datePicker = [[UIDatePicker alloc]initWithFrame:CGRectMake(10, 10, 320, 216)];
+    datePicker.datePickerMode = UIDatePickerModeTime;
+    self.tempTimeView = datePicker;
+    if (date.length > 0) {
+        
+        double currentDate = [[doTextHelper alloc]StrToLong:date :INT16_MAX];
+        datePicker.date = [NSDate dateWithTimeIntervalSince1970:currentDate / 1000];
+    }
+    if (minDate.length > 0) {
+        double min = [[doTextHelper alloc]StrToLong:minDate :INT16_MAX];
+        datePicker.minimumDate = [NSDate dateWithTimeIntervalSince1970:min / 1000];
+    }
+    if (maxDate.length > 0) {
+        double max = [[doTextHelper alloc]StrToLong:maxDate :INT16_MAX];
+        datePicker.maximumDate = [NSDate dateWithTimeIntervalSince1970:max / 1000];
+    }
+    return datePicker;
+}
 #pragma mark -
 #pragma mark UIAlertViewDelegate
 
@@ -180,11 +206,15 @@
     long selectTime;
     NSString *flag = [NSString stringWithFormat:@"%ld", (long)++buttonIndex];
     if (self.dateType == 0) {
-        selectTime = [self getLongDateTime];
+        selectTime = self.tempDateView.date.timeIntervalSince1970 * 1000;
+    }
+    else if(self.dateType == 1)
+    {
+        selectTime = self.tempDateView.date.timeIntervalSince1970 * 1000;
     }
     else
     {
-        selectTime = self.tempDateView.date.timeIntervalSince1970;
+        selectTime = self.tempTimeView.date.timeIntervalSince1970 * 1000;
     }
    [resultNode setValue:[NSString stringWithFormat:@"%ld",selectTime]forKey:@"time"];
    [resultNode setValue:flag forKey:@"flag"];
