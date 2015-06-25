@@ -16,8 +16,9 @@
 #import "doIPage.h"
 #import <UIKit/UIKit.h>
 #import "doTextHelper.h"
+#import "doYZAlterView.h"
 
-@interface do_DateTimePicker_SM()<UIAlertViewDelegate>
+@interface do_DateTimePicker_SM()<UIAlertViewDelegate,doYZAlterViewDelegate>
 @property (nonatomic,strong) UIDatePicker *tempDateView;
 @property (nonatomic,strong) UIDatePicker *tempTimeView;
 @property (nonatomic,assign) int dateType;
@@ -53,13 +54,23 @@
     title = [self getTitle:title withType:type];
     NSArray *buttons = [doJsonHelper GetOneArray:_dictParas :@"buttons"];
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIAlertView *alView = [[UIAlertView alloc]init];
-        alView.delegate = self;
-        alView.title = title;
-        alView = [self UIActionSheetShow:buttons withAlterView:alView];
-        UIView *suView = [self getAlterView:type withMaxDate:maxDate withMinDate:minDate];
-        [alView setValue:suView forKey:@"accessoryView"];
-        [alView show];
+        doYZAlterView *alterView = [[doYZAlterView alloc]initWithTitle:title withButtons:buttons withType:type];
+        alterView.type = type;
+        alterView.buttonsCount = (int)[buttons count];
+        alterView.delegate = self;
+        alterView.contentView = [self getAlterView:type withMaxDate:maxDate withMinDate:minDate];
+        [alterView show];
+//        UIAlertView *alView = [[UIAlertView alloc]init];
+//        alView.delegate = self;
+//        alView.title = title;
+//        alView = [self UIActionSheetShow:buttons withAlterView:alView];
+//        UIView *suView = [self getAlterView:type withMaxDate:maxDate withMinDate:minDate];
+//        suView.backgroundColor = [UIColor whiteColor];
+//        id<doIPage>pageModel = _scritEngine.CurrentPage;
+//        UIViewController *currentVC = (UIViewController *)pageModel.PageView;
+//        [currentVC.view addSubview:suView];
+//        [alView setValue:suView forKey:@"accessoryView"];
+//        [alView show];
     });
 }
 - (UIAlertView *) UIActionSheetShow:(NSArray *)btns withAlterView:(UIAlertView *)alView
@@ -106,32 +117,33 @@
     switch (type) {
         case 0://日期和时间
         {
-            supView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 340, 480)];
+            supView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 400)];
             UIDatePicker *datePicker = [self createDate:self.currentDate withMinDate:minDate withMaxDate:maxDate];
             [datePicker addTarget:self action:@selector(dateChanged:) forControlEvents:UIControlEventValueChanged];
-            datePicker.frame = CGRectMake(10, 10, 320, 216);
+            datePicker.frame = CGRectMake(0, 10, 320, 216);
             UIDatePicker *timePicker = [self createTime:self.currentDate withMinDate:minDate withMaxDate:maxDate];
             [timePicker addTarget:self action:@selector(timeChanged:) forControlEvents:UIControlEventValueChanged];
-            timePicker.frame = CGRectMake(10, 226, 320, 216);
+            timePicker.frame = CGRectMake(0, 216, 320, 216);
             [supView addSubview:datePicker];
             [supView addSubview:timePicker];
         }
             break;
         case 1://日期
         {
-            supView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 340, 216)];
+            supView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 216)];
             UIDatePicker *datePicker = [self createDate:self.currentDate withMinDate:minDate withMaxDate:maxDate];
             [supView addSubview:datePicker];
         }
             break;
         case 2://时间
         {
-            supView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 340, 216)];
-            UIDatePicker *timePicker = [self createDate:self.currentDate withMinDate:minDate withMaxDate:maxDate];
+            supView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 216)];
+            UIDatePicker *timePicker = [self createTime:self.currentDate withMinDate:minDate withMaxDate:maxDate];
             [supView addSubview:timePicker];
         }
             break;
     }
+//    supView.backgroundColor = [UIColor greenColor];
     return supView;
 }
 
@@ -159,7 +171,7 @@
 
 - (UIDatePicker *)createDate:(NSString *)date withMinDate:(NSString *)minDate withMaxDate:(NSString *)maxDate
 {
-    UIDatePicker *datePicker = [[UIDatePicker alloc]initWithFrame:CGRectMake(10, 10, 320, 216)];
+    UIDatePicker *datePicker = [[UIDatePicker alloc]initWithFrame:CGRectMake(0, 10, 320, 216)];
     datePicker.datePickerMode = UIDatePickerModeDate;
     self.tempDateView = datePicker;
     if (date.length > 0) {
@@ -179,7 +191,7 @@
 }
 - (UIDatePicker *)createTime:(NSString *)date withMinDate:(NSString *)minDate withMaxDate:(NSString *)maxDate
 {
-    UIDatePicker *datePicker = [[UIDatePicker alloc]initWithFrame:CGRectMake(10, 10, 320, 216)];
+    UIDatePicker *datePicker = [[UIDatePicker alloc]initWithFrame:CGRectMake(0, 10, 320, 216)];
     datePicker.datePickerMode = UIDatePickerModeTime;
     self.tempTimeView = datePicker;
     if (date.length > 0) {
@@ -199,9 +211,11 @@
 }
 #pragma mark -
 #pragma mark UIAlertViewDelegate
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+-(void)alertView:(UIView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [alertView removeFromSuperview];
+    });
     NSMutableDictionary *resultNode = [NSMutableDictionary dictionary];
     long selectTime;
     NSString *flag = [NSString stringWithFormat:@"%ld", (long)++buttonIndex];
@@ -216,11 +230,33 @@
     {
         selectTime = self.tempTimeView.date.timeIntervalSince1970 * 1000;
     }
-   [resultNode setValue:[NSString stringWithFormat:@"%ld",selectTime]forKey:@"time"];
-   [resultNode setValue:flag forKey:@"flag"];
+    [resultNode setValue:[NSString stringWithFormat:@"%ld",selectTime]forKey:@"time"];
+    [resultNode setValue:flag forKey:@"flag"];
     doInvokeResult *_invokeResult = [[doInvokeResult alloc] init];
     [_invokeResult SetResultNode:resultNode];
     [_scritEngine Callback:_callbackName :_invokeResult];
 }
+//- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+//{
+//    NSMutableDictionary *resultNode = [NSMutableDictionary dictionary];
+//    long selectTime;
+//    NSString *flag = [NSString stringWithFormat:@"%ld", (long)++buttonIndex];
+//    if (self.dateType == 0) {
+//        selectTime = self.tempDateView.date.timeIntervalSince1970 * 1000;
+//    }
+//    else if(self.dateType == 1)
+//    {
+//        selectTime = self.tempDateView.date.timeIntervalSince1970 * 1000;
+//    }
+//    else
+//    {
+//        selectTime = self.tempTimeView.date.timeIntervalSince1970 * 1000;
+//    }
+//   [resultNode setValue:[NSString stringWithFormat:@"%ld",selectTime]forKey:@"time"];
+//   [resultNode setValue:flag forKey:@"flag"];
+//    doInvokeResult *_invokeResult = [[doInvokeResult alloc] init];
+//    [_invokeResult SetResultNode:resultNode];
+//    [_scritEngine Callback:_callbackName :_invokeResult];
+//}
 
 @end

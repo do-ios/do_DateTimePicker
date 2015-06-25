@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3B812C181B3BE6D7006F78A8 /* doYZAlterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B812C171B3BE6D7006F78A8 /* doYZAlterView.m */; };
 		3BDC12771B2A840700361C5F /* do_DateTimePicker_App.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BDC12731B2A840700361C5F /* do_DateTimePicker_App.m */; };
 		3BDC12781B2A840700361C5F /* do_DateTimePicker_SM.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BDC12761B2A840700361C5F /* do_DateTimePicker_SM.m */; };
 		3BE9EA0B1B2E610F006043D2 /* do_DateTimePicker_App.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3BDC12721B2A840700361C5F /* do_DateTimePicker_App.h */; };
@@ -67,6 +68,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3B812C161B3BE6D7006F78A8 /* doYZAlterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = doYZAlterView.h; sourceTree = "<group>"; };
+		3B812C171B3BE6D7006F78A8 /* doYZAlterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = doYZAlterView.m; sourceTree = "<group>"; };
 		3BDC12721B2A840700361C5F /* do_DateTimePicker_App.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = do_DateTimePicker_App.h; sourceTree = "<group>"; };
 		3BDC12731B2A840700361C5F /* do_DateTimePicker_App.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = do_DateTimePicker_App.m; sourceTree = "<group>"; };
 		3BDC12741B2A840700361C5F /* do_DateTimePicker_ISM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = do_DateTimePicker_ISM.h; sourceTree = "<group>"; };
@@ -363,6 +366,8 @@
 				3BDC12741B2A840700361C5F /* do_DateTimePicker_ISM.h */,
 				3BDC12751B2A840700361C5F /* do_DateTimePicker_SM.h */,
 				3BDC12761B2A840700361C5F /* do_DateTimePicker_SM.m */,
+				3B812C161B3BE6D7006F78A8 /* doYZAlterView.h */,
+				3B812C171B3BE6D7006F78A8 /* doYZAlterView.m */,
 				A4A1A01C1AF0F82B00D835A5 /* do_Test.json */,
 			);
 			path = doExtLib;
@@ -514,6 +519,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3BDC12771B2A840700361C5F /* do_DateTimePicker_App.m in Sources */,
+				3B812C181B3BE6D7006F78A8 /* doYZAlterView.m in Sources */,
 				3BDC12781B2A840700361C5F /* do_DateTimePicker_SM.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
