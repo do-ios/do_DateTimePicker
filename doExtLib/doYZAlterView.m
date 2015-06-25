@@ -8,9 +8,6 @@
 #define kTitleYOffset 15.0f
 #define kTitleHeight 25.0f
 
-#define kContentOffset 30.0f
-#define kBetweenLabelOffset 20.0f
-
 #define kAlertWidth 280.0f
 #define kContentHeitht 216.0f
 #define kButtonHeight 40.0f
