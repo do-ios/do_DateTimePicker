@@ -60,17 +60,6 @@
         alterView.delegate = self;
         alterView.contentView = [self getAlterView:type withMaxDate:maxDate withMinDate:minDate];
         [alterView show];
-//        UIAlertView *alView = [[UIAlertView alloc]init];
-//        alView.delegate = self;
-//        alView.title = title;
-//        alView = [self UIActionSheetShow:buttons withAlterView:alView];
-//        UIView *suView = [self getAlterView:type withMaxDate:maxDate withMinDate:minDate];
-//        suView.backgroundColor = [UIColor whiteColor];
-//        id<doIPage>pageModel = _scritEngine.CurrentPage;
-//        UIViewController *currentVC = (UIViewController *)pageModel.PageView;
-//        [currentVC.view addSubview:suView];
-//        [alView setValue:suView forKey:@"accessoryView"];
-//        [alView show];
     });
 }
 - (UIAlertView *) UIActionSheetShow:(NSArray *)btns withAlterView:(UIAlertView *)alView
@@ -193,6 +182,14 @@
     }
     if (minDate.length > 0) {
         double min = [[doTextHelper alloc]StrToLong:minDate :INT16_MAX];
+        double currentMin = datePicker.date.timeIntervalSince1970 * 1000;
+        if (min >= currentMin) {
+            datePicker.minimumDate = [NSDate dateWithTimeIntervalSince1970:(currentMin / 1000)];
+        }
+        else
+        {
+            datePicker.minimumDate = [NSDate dateWithTimeIntervalSince1970:(min / 1000)];
+        }
         datePicker.minimumDate = [NSDate dateWithTimeIntervalSince1970:(min / 1000)];
     }
     else
@@ -201,7 +198,14 @@
     }
     if (maxDate.length > 0) {
         double max = [[doTextHelper alloc]StrToLong:maxDate :INT16_MAX];
-        datePicker.maximumDate = [NSDate dateWithTimeIntervalSince1970:(max / 1000)];
+        double currtentMax = datePicker.date.timeIntervalSince1970 * 1000;
+        if (max <= currtentMax) {
+            datePicker.maximumDate = [NSDate dateWithTimeIntervalSince1970:(currtentMax / 1000)];
+        }
+        else
+        {
+            datePicker.maximumDate = [NSDate dateWithTimeIntervalSince1970:(max / 1000)];
+        }
     }
     else
     {
