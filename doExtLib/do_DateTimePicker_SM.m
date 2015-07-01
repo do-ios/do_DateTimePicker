@@ -218,7 +218,7 @@
     });
     NSMutableDictionary *resultNode = [NSMutableDictionary dictionary];
     long selectTime;
-    NSString *flag = [NSString stringWithFormat:@"%ld", (long)++buttonIndex];
+    NSString *flag = [NSString stringWithFormat:@"%ld", (long)buttonIndex];
     if (self.dateType == 0) {
         selectTime = self.tempDateView.date.timeIntervalSince1970 * 1000;
     }

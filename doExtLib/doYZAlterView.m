@@ -57,8 +57,9 @@
                 {
                     btn.frame = CGRectMake(i * btnW,  kContentHeitht + kTitleHeight + kTitleYOffset, btnW, btnH);
                 }
-                [btn setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithRed:87.0/255.0 green:135.0/255.0 blue:173.0/255.0 alpha:1]] forState:UIControlStateNormal];
+                [btn setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1]] forState:UIControlStateNormal];
                 [btn setTitle:buttons[i] forState:UIControlStateNormal];
+                [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
                 [self addSubview:btn];
             }
         }
