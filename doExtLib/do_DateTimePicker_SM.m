@@ -161,6 +161,15 @@
 - (UIDatePicker *)createDateOrTime:(int)type withDate:(NSString *)date withMinDate:(NSString *)minDate withMaxDate:(NSString *)maxDate
 {
     UIDatePicker *datePicker = [[UIDatePicker alloc]initWithFrame:CGRectMake(0, 10, 320, 216)];
+    double max;
+    double min;
+    max = [[doTextHelper alloc]StrToLong:maxDate :INT16_MAX];
+    min = [[doTextHelper alloc]StrToLong:minDate :INT16_MAX];
+    if (max<= min) {
+        datePicker.minimumDate = [NSDate dateWithTimeIntervalSince1970:0];
+        datePicker.maximumDate = [NSDate dateWithTimeIntervalSince1970:(4070880000)];
+        return datePicker;
+    }
     if (type == 0) {
         datePicker.datePickerMode = UIDatePickerModeDate;
         self.tempDateView = datePicker;
@@ -182,14 +191,6 @@
     }
     if (minDate.length > 0) {
         double min = [[doTextHelper alloc]StrToLong:minDate :INT16_MAX];
-        double currentMin = datePicker.date.timeIntervalSince1970 * 1000;
-        if (min >= currentMin) {
-            datePicker.minimumDate = [NSDate dateWithTimeIntervalSince1970:(currentMin / 1000)];
-        }
-        else
-        {
-            datePicker.minimumDate = [NSDate dateWithTimeIntervalSince1970:(min / 1000)];
-        }
         datePicker.minimumDate = [NSDate dateWithTimeIntervalSince1970:(min / 1000)];
     }
     else
@@ -198,14 +199,7 @@
     }
     if (maxDate.length > 0) {
         double max = [[doTextHelper alloc]StrToLong:maxDate :INT16_MAX];
-        double currtentMax = datePicker.date.timeIntervalSince1970 * 1000;
-        if (max <= currtentMax) {
-            datePicker.maximumDate = [NSDate dateWithTimeIntervalSince1970:(currtentMax / 1000)];
-        }
-        else
-        {
-            datePicker.maximumDate = [NSDate dateWithTimeIntervalSince1970:(max / 1000)];
-        }
+        datePicker.maximumDate = [NSDate dateWithTimeIntervalSince1970:(max / 1000)];
     }
     else
     {
