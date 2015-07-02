@@ -161,6 +161,17 @@
 - (UIDatePicker *)createDateOrTime:(int)type withDate:(NSString *)date withMinDate:(NSString *)minDate withMaxDate:(NSString *)maxDate
 {
     UIDatePicker *datePicker = [[UIDatePicker alloc]initWithFrame:CGRectMake(0, 10, 320, 216)];
+    if (type == 0) {
+        datePicker.datePickerMode = UIDatePickerModeDate;
+        self.tempDateView = datePicker;
+        
+    }
+    else
+    {
+        datePicker.datePickerMode = UIDatePickerModeTime;
+        self.tempTimeView = datePicker;
+    }
+
     double max;
     double min;
     max = [[doTextHelper alloc]StrToLong:maxDate :INT16_MAX];
@@ -169,16 +180,6 @@
         datePicker.minimumDate = [NSDate dateWithTimeIntervalSince1970:0];
         datePicker.maximumDate = [NSDate dateWithTimeIntervalSince1970:(4070880000)];
         return datePicker;
-    }
-    if (type == 0) {
-        datePicker.datePickerMode = UIDatePickerModeDate;
-        self.tempDateView = datePicker;
-
-    }
-    else
-    {
-        datePicker.datePickerMode = UIDatePickerModeTime;
-        self.tempTimeView = datePicker;
     }
     if (date.length > 0) {
         
