@@ -174,16 +174,18 @@
 
     double max;
     double min;
-    max = [[doTextHelper alloc]StrToLong:maxDate :INT16_MAX];
-    min = [[doTextHelper alloc]StrToLong:minDate :INT16_MAX];
-    if (max<= min) {
+    max = [[doTextHelper alloc]StrToLong:maxDate :0];
+    min = [[doTextHelper alloc]StrToLong:minDate :0];
+    if (max < min) {
         datePicker.minimumDate = [NSDate dateWithTimeIntervalSince1970:0];
         datePicker.maximumDate = [NSDate dateWithTimeIntervalSince1970:(4070880000)];
+        double currentDate = [[doTextHelper alloc]StrToLong:date :0];
+        datePicker.date = [NSDate dateWithTimeIntervalSince1970:(currentDate / 1000)];
         return datePicker;
     }
     if (date.length > 0) {
         
-        double currentDate = [[doTextHelper alloc]StrToLong:date :INT16_MAX];
+        double currentDate = [[doTextHelper alloc]StrToLong:date :0];
         datePicker.date = [NSDate dateWithTimeIntervalSince1970:(currentDate / 1000)];
     }
     else
@@ -191,7 +193,7 @@
         datePicker.date = [NSDate date];
     }
     if (minDate.length > 0) {
-        double min = [[doTextHelper alloc]StrToLong:minDate :INT16_MAX];
+        double min = [[doTextHelper alloc]StrToLong:minDate :0];
         datePicker.minimumDate = [NSDate dateWithTimeIntervalSince1970:(min / 1000)];
     }
     else
@@ -199,7 +201,7 @@
         datePicker.minimumDate = [NSDate dateWithTimeIntervalSince1970:0];
     }
     if (maxDate.length > 0) {
-        double max = [[doTextHelper alloc]StrToLong:maxDate :INT16_MAX];
+        double max = [[doTextHelper alloc]StrToLong:maxDate :0];
         datePicker.maximumDate = [NSDate dateWithTimeIntervalSince1970:(max / 1000)];
     }
     else
