@@ -127,15 +127,15 @@
         case 2://时间
         {
             supView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 216)];
-            UIDatePicker *timePicker = [self createDateOrTime:1 withDate:self.currentDate withMinDate:minDate withMaxDate:maxDate];;
+            UIDatePicker *timePicker = [self createDateOrTime:1 withDate:self.currentDate withMinDate:minDate withMaxDate:maxDate];
             [supView addSubview:timePicker];
         }
             break;
     }
-//    supView.backgroundColor = [UIColor greenColor];
     return supView;
 }
-
+#pragma - mark -
+#pragma - mark 日期时间联动
 - (void)dateChanged:(UIDatePicker *)sender
 {
     [self.tempTimeView setDate:sender.date animated:YES];
@@ -145,19 +145,8 @@
 {
     [self.tempDateView setDate:sender.date animated:YES];
 }
-
-- (long)getLongDateTime
-{
-    NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSDateComponents *timeCompt = [calendar components:(NSCalendarUnitHour |NSCalendarUnitMinute|NSCalendarUnitSecond) fromDate:self.tempDateView.date];
-    NSDateComponents *dateCompt = [calendar components:(NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSCalendarUnitHour |NSCalendarUnitMinute|NSCalendarUnitSecond) fromDate:self.tempTimeView.date];
-    dateCompt.hour = timeCompt.hour;
-    dateCompt.minute = timeCompt.minute;
-    dateCompt.second = timeCompt.second;
-    NSDate *date = [calendar dateFromComponents:dateCompt];
-    return date.timeIntervalSince1970;
-}
-
+#pragma - mark -
+#pragma - mark 创建日期或时间选择器
 - (UIDatePicker *)createDateOrTime:(int)type withDate:(NSString *)date withMinDate:(NSString *)minDate withMaxDate:(NSString *)maxDate
 {
     UIDatePicker *datePicker = [[UIDatePicker alloc]initWithFrame:CGRectMake(0, 10, 320, 216)];
@@ -218,46 +207,20 @@
         [alertView removeFromSuperview];
     });
     NSMutableDictionary *resultNode = [NSMutableDictionary dictionary];
-    long selectTime;
+    long long selectTime = 0.0;
     NSString *flag = [NSString stringWithFormat:@"%ld", (long)buttonIndex];
-    if (self.dateType == 0) {
-        selectTime = self.tempDateView.date.timeIntervalSince1970 * 1000;
-    }
-    else if(self.dateType == 1)
-    {
-        selectTime = self.tempDateView.date.timeIntervalSince1970 * 1000;
+    if (self.dateType == 2) {
+        selectTime = self.tempTimeView.date.timeIntervalSince1970 * 1000;
     }
     else
     {
-        selectTime = self.tempTimeView.date.timeIntervalSince1970 * 1000;
+        selectTime = self.tempDateView.date.timeIntervalSince1970 * 1000;
     }
-    [resultNode setValue:[NSString stringWithFormat:@"%ld",selectTime]forKey:@"time"];
+    [resultNode setValue:[NSString stringWithFormat:@"%lld",selectTime]forKey:@"time"];
     [resultNode setValue:flag forKey:@"flag"];
     doInvokeResult *_invokeResult = [[doInvokeResult alloc] init];
     [_invokeResult SetResultNode:resultNode];
     [_scritEngine Callback:_callbackName :_invokeResult];
 }
-//- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-//{
-//    NSMutableDictionary *resultNode = [NSMutableDictionary dictionary];
-//    long selectTime;
-//    NSString *flag = [NSString stringWithFormat:@"%ld", (long)++buttonIndex];
-//    if (self.dateType == 0) {
-//        selectTime = self.tempDateView.date.timeIntervalSince1970 * 1000;
-//    }
-//    else if(self.dateType == 1)
-//    {
-//        selectTime = self.tempDateView.date.timeIntervalSince1970 * 1000;
-//    }
-//    else
-//    {
-//        selectTime = self.tempTimeView.date.timeIntervalSince1970 * 1000;
-//    }
-//   [resultNode setValue:[NSString stringWithFormat:@"%ld",selectTime]forKey:@"time"];
-//   [resultNode setValue:flag forKey:@"flag"];
-//    doInvokeResult *_invokeResult = [[doInvokeResult alloc] init];
-//    [_invokeResult SetResultNode:resultNode];
-//    [_scritEngine Callback:_callbackName :_invokeResult];
-//}
 
 @end
