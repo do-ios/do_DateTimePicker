@@ -38,7 +38,7 @@
         titleLab.font = [UIFont boldSystemFontOfSize:20.0f];
         titleLab.textColor = [UIColor colorWithRed:56.0/255.0 green:64.0/255.0 blue:71.0/255.0 alpha:1];
         [self addSubview:titleLab];
-        if (!buttons || buttons.count == 0) {
+        if (!buttons) {
             buttons = @[@"取消",@"确定"];
         }
         if (buttons.count <= 2) {
