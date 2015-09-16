@@ -139,6 +139,8 @@
     UIView *shadView = [[UIView alloc]initWithFrame:CGRectMake(0, 20, screenW, screenH - 20)];
     shadView.backgroundColor = [UIColor grayColor];
     shadView.alpha = 0.5;
+    UITapGestureRecognizer *shadViewTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(shadViewTap:)];
+    [shadView addGestureRecognizer:shadViewTap];
     self.shadView = shadView;
     [UIView animateWithDuration:0.25 animations:^{
         [self addSubview:shadView];
@@ -167,7 +169,13 @@
         [self.delegate alertView:self clickedButtonAtIndex:sender.tag];
     }
 }
-
+- (void)shadViewTap:(UITapGestureRecognizer *)recognizer
+{
+    [UIView animateWithDuration:0.25 animations:^{
+        [self.shadView removeFromSuperview];
+        [self removeFromSuperview];
+    }];
+}
 @end
 
 @implementation UIImage (colorful)
