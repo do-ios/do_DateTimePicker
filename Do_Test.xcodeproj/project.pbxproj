@@ -68,6 +68,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3B57B3D61BB2449500D7529C /* do_DateTimePicker.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = do_DateTimePicker.bundle; sourceTree = "<group>"; };
 		3B812C161B3BE6D7006F78A8 /* doYZAlterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = doYZAlterView.h; sourceTree = "<group>"; };
 		3B812C171B3BE6D7006F78A8 /* doYZAlterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = doYZAlterView.m; sourceTree = "<group>"; };
 		3BDC12721B2A840700361C5F /* do_DateTimePicker_App.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = do_DateTimePicker_App.h; sourceTree = "<group>"; };
@@ -361,6 +362,7 @@
 		A44BC7B31AEE19CD001580AA /* doExtLib */ = {
 			isa = PBXGroup;
 			children = (
+				3B57B3D61BB2449500D7529C /* do_DateTimePicker.bundle */,
 				3BDC12721B2A840700361C5F /* do_DateTimePicker_App.h */,
 				3BDC12731B2A840700361C5F /* do_DateTimePicker_App.m */,
 				3BDC12741B2A840700361C5F /* do_DateTimePicker_ISM.h */,

@@ -18,6 +18,8 @@
 #import "doTextHelper.h"
 #import "doYZAlterView.h"
 
+#define ScreenWidth  280
+
 @interface do_DateTimePicker_SM()<UIAlertViewDelegate,doYZAlterViewDelegate>
 @property (nonatomic,strong) UIDatePicker *tempDateView;
 @property (nonatomic,strong) UIDatePicker *tempTimeView;
@@ -35,6 +37,7 @@
 //异步
 - (void)show:(NSArray *)parms
 {
+
     //异步耗时操作，但是不需要启动线程，框架会自动加载一个后台线程处理这个函数
     NSDictionary *_dictParas = [parms objectAtIndex:0];
     //参数字典_dictParas
@@ -106,32 +109,41 @@
     switch (type) {
         case 0://日期和时间
         {
-            supView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 400)];
+            supView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 442)];
             UIDatePicker *datePicker = [self createDateOrTime:0 withDate:self.currentDate withMinDate:minDate withMaxDate:maxDate];;
             [datePicker addTarget:self action:@selector(dateChanged:) forControlEvents:UIControlEventValueChanged];
-            datePicker.frame = CGRectMake(0, 10, 320, 216);
+            datePicker.frame = CGRectMake(0, 20, 280, 216);
+            datePicker.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin;
             UIDatePicker *timePicker = [self createDateOrTime:1 withDate:self.currentDate withMinDate:minDate withMaxDate:maxDate];
             [timePicker addTarget:self action:@selector(timeChanged:) forControlEvents:UIControlEventValueChanged];
-            timePicker.frame = CGRectMake(0, 216, 320, 216);
+            timePicker.frame = CGRectMake(0, 226, 280, 216);
+            timePicker.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin;
             [supView addSubview:datePicker];
             [supView addSubview:timePicker];
         }
             break;
         case 1://日期
         {
-            supView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 216)];
+            supView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 216)];
             UIDatePicker *datePicker = [self createDateOrTime:0 withDate:self.currentDate withMinDate:minDate withMaxDate:maxDate];
+            datePicker.frame = CGRectMake(0, 20, 280, 216);
+            datePicker.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin;
+
             [supView addSubview:datePicker];
         }
             break;
         case 2://时间
         {
-            supView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 216)];
+            supView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 216)];
             UIDatePicker *timePicker = [self createDateOrTime:1 withDate:self.currentDate withMinDate:minDate withMaxDate:maxDate];
+            timePicker.frame = CGRectMake(0, 20, 280, 216);
+            timePicker.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin;
+
             [supView addSubview:timePicker];
         }
             break;
     }
+    supView.clipsToBounds = YES;
     return supView;
 }
 #pragma - mark -
@@ -149,7 +161,8 @@
 #pragma - mark 创建日期或时间选择器
 - (UIDatePicker *)createDateOrTime:(int)type withDate:(NSString *)date withMinDate:(NSString *)minDate withMaxDate:(NSString *)maxDate
 {
-    UIDatePicker *datePicker = [[UIDatePicker alloc]initWithFrame:CGRectMake(0, 10, 320, 216)];
+//    UIDatePicker *datePicker = [[UIDatePicker alloc]initWithFrame:CGRectMake(0, 10, ScreenWidth, 216)];
+    UIDatePicker *datePicker = [[UIDatePicker alloc]init];
     if (type == 0) {
         datePicker.datePickerMode = UIDatePickerModeDate;
         self.tempDateView = datePicker;

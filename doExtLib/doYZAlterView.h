@@ -28,5 +28,6 @@
 @interface UIImage (colorful)
 
 + (UIImage *)imageWithColor:(UIColor *)color;
++ (UIImage *)imageWithImage:(UIImage *)image withFrame:(CGRect)frame;
 
 @end

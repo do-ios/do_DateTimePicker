@@ -31,7 +31,6 @@
     if (self = [super init]) {
         self.layer.cornerRadius = 5.0;
         self.layer.masksToBounds = YES;
-        self.backgroundColor = [UIColor whiteColor];
         UILabel *titleLab = [[UILabel alloc] initWithFrame:CGRectMake(0, kTitleYOffset, kAlertWidth, kTitleHeight)];
         titleLab.textAlignment = NSTextAlignmentCenter;
         titleLab.text = title;
@@ -48,8 +47,8 @@
                 UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
                 btn.tag = i;
                 [btn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
-                btn.layer.borderWidth = 1;
-                btn.layer.borderColor = [UIColor lightGrayColor].CGColor;
+//                btn.layer.borderWidth = 1;
+//                btn.layer.borderColor = [UIColor lightGrayColor].CGColor;
                 if (type == 0) {
                     btn.frame = CGRectMake(i * btnW, 2 * kContentHeitht + kTitleHeight + kTitleYOffset , btnW, btnH);
                 }
@@ -57,7 +56,20 @@
                 {
                     btn.frame = CGRectMake(i * btnW,  kContentHeitht + kTitleHeight + kTitleYOffset, btnW, btnH);
                 }
-                [btn setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1]] forState:UIControlStateNormal];
+                UIImage *bgImage;
+                if (i == 0) {//设置左边按钮bg
+                    bgImage = [UIImage imageNamed:@"do_DateTimePicker.bundle/leftbg.png"];
+                }
+                else if (i == (buttons.count - 1))//设置右边按钮bg
+                {
+                    bgImage = [UIImage imageNamed:@"do_DateTimePicker.bundle/rightbg.png"];
+                }
+                else
+                {
+                    bgImage = [UIImage imageNamed:@"do_DateTimePicker.bundle/middlebg.png"];
+                }
+                bgImage = [UIImage imageWithImage:bgImage withFrame:btn.frame];
+                [btn setBackgroundImage:bgImage forState:UIControlStateNormal];
                 [btn setTitle:buttons[i] forState:UIControlStateNormal];
                 [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
                 [self addSubview:btn];
@@ -71,8 +83,8 @@
                 UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
                 btn.tag = i;
                 [btn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
-                btn.layer.borderWidth = 1;
-                btn.layer.borderColor = [UIColor lightGrayColor].CGColor;
+//                btn.layer.borderWidth = 1;
+//                btn.layer.borderColor = [UIColor lightGrayColor].CGColor;
                 if (type == 0) {
                     btn.frame = CGRectMake(0, 2 * kContentHeitht + i * kButtonHeight, btnW, btnH);
                 }
@@ -80,7 +92,20 @@
                 {
                     btn.frame = CGRectMake(0,  kContentHeitht + i * kButtonHeight + 120 - (kButtonHeight *(i + 1)), btnW, btnH);
                 }
-                [btn setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithRed:87.0/255.0 green:135.0/255.0 blue:173.0/255.0 alpha:1]] forState:UIControlStateNormal];
+                UIImage *bgImage;
+                if (i == 0) {//设置左边按钮bg
+                    bgImage = [UIImage imageNamed:@"do_DateTimePicker.bundle/leftbg.png"];
+                }
+                else if (i == (buttons.count - 1))//设置右边按钮bg
+                {
+                    bgImage = [UIImage imageNamed:@"do_DateTimePicker.bundle/rightbg.png"];
+                }
+                else
+                {
+                    bgImage = [UIImage imageNamed:@"do_DateTimePicker.bundle/middlebg.png"];
+                }
+                bgImage = [UIImage imageWithImage:bgImage withFrame:btn.frame];
+                [btn setBackgroundImage:bgImage forState:UIControlStateNormal];
                 [btn setTitle:buttons[i] forState:UIControlStateNormal];
                 [self addSubview:btn];
             }
@@ -134,6 +159,8 @@
         }
     }
     self.frame = CGRectMake((CGRectGetWidth(topVC.view.bounds) - kAlertWidth) * 0.5, (CGRectGetHeight(topVC.view.bounds) - alterHeight) * 0.5, kAlertWidth, alterHeight);
+//    UIImage *backImage = [UIImage imageWithImage:[UIImage imageNamed:@"do_DateTimePicker.bundle/background.png"] withFrame:self.frame];
+    self.backgroundColor = [UIColor whiteColor];
     CGFloat screenW = [UIScreen mainScreen].bounds.size.width;
     CGFloat screenH = [UIScreen mainScreen].bounds.size.height;
     UIView *shadView = [[UIView alloc]initWithFrame:CGRectMake(0, 20, screenW, screenH - 20)];
@@ -193,6 +220,12 @@
     UIGraphicsEndImageContext();
     
     return image;
+}
+
++ (UIImage *)imageWithImage:(UIImage *)image withFrame:(CGRect)frame
+{
+    UIEdgeInsets insets = UIEdgeInsetsMake(frame.size.height / 2, frame.size.width / 2, frame.size.height / 2, frame.size.width / 2);
+    return [image resizableImageWithCapInsets:insets resizingMode:UIImageResizingModeStretch];
 }
 
 @end
