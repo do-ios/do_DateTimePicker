@@ -181,7 +181,12 @@
     if (max < min) {
         datePicker.minimumDate = [NSDate dateWithTimeIntervalSince1970:0];
         datePicker.maximumDate = [NSDate dateWithTimeIntervalSince1970:(4102329600)];
+        if (date.length == 0) {
+            datePicker.date = [NSDate date];
+            return datePicker;
+        }
         double currentDate = [[doTextHelper alloc]StrToLong:date :0];
+        
         datePicker.date = [NSDate dateWithTimeIntervalSince1970:(currentDate / 1000)];
         return datePicker;
     }
