@@ -49,7 +49,7 @@
                 [btn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
 //                btn.layer.borderWidth = 1;
 //                btn.layer.borderColor = [UIColor lightGrayColor].CGColor;
-                if (type == 0) {
+                if (type == 0 || type == 3) {
                     btn.frame = CGRectMake(i * btnW, 2 * kContentHeitht + kTitleHeight + kTitleYOffset , btnW, btnH);
                 }
                 else
@@ -93,7 +93,7 @@
                     btn.frame = CGRectMake(0,  kContentHeitht + i * kButtonHeight + 120 - (kButtonHeight *(i + 1)), btnW, btnH);
                 }
                 UIImage *bgImage;
-                if (i == 0) {//设置左边按钮bg
+                if (i == 0 || type == 3) {//设置左边按钮bg
                     bgImage = [UIImage imageNamed:@"do_DateTimePicker.bundle/leftbg.png"];
                 }
                 else if (i == (buttons.count - 1))//设置右边按钮bg
@@ -113,19 +113,7 @@
     }
     return self;
 }
-- (void)setDatePickerView:(UIDatePicker *)datePickerView
-{
-    datePickerView.frame = CGRectMake(2,kTitleYOffset + kTitleHeight , kAlertWidth, kContentHeitht);
-    [self addSubview:datePickerView];
 
-}
-
-- (void)setTimePickerView:(UIDatePicker *)timePickerView
-{
-    timePickerView.frame = CGRectMake(2, kTitleYOffset + kTitleHeight + kContentHeitht, kAlertWidth, kContentHeitht);
-    [self addSubview:timePickerView];
-
-}
 
 - (void)setContentView:(UIView *)contentView
 {
@@ -138,7 +126,7 @@
 {
     UIViewController *topVC = [self appRootViewController];
     CGFloat alterHeight;
-    if (self.type == 0) {
+    if (self.type == 0 || self.type == 3) {
         if (self.buttonsCount > 2) {
             alterHeight = kTitleYOffset + kTitleHeight + 2 * kContentHeitht + self.buttonsCount * kButtonHeight;
 
@@ -169,7 +157,7 @@
     UITapGestureRecognizer *shadViewTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(shadViewTap:)];
     [shadView addGestureRecognizer:shadViewTap];
     self.shadView = shadView;
-    [UIView animateWithDuration:0.25 animations:^{
+    [UIView animateWithDuration:0.05 animations:^{
         [self addSubview:shadView];
         [topVC.view addSubview:shadView];
         [topVC.view addSubview:self];

@@ -29,6 +29,7 @@
 @property (nonatomic,copy) NSString *currentDate;
 @property (nonatomic,strong) UIView *tempView;
 @property (nonatomic,strong) UIAlertView *tempAlView;
+@property (nonatomic,strong) UILabel *weekLabel;
 @end
 @implementation do_DateTimePicker_SM
 #pragma mark - 方法
@@ -100,6 +101,9 @@
         case 2:
             title = @"时间选择";
             break;
+        case 3:
+            title = @"日期时间选择";
+            break;
     }
     return title;
 }
@@ -112,11 +116,11 @@
             supView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 442)];
             UIDatePicker *datePicker = [self createDateOrTime:0 withDate:self.currentDate withMinDate:minDate withMaxDate:maxDate];;
             [datePicker addTarget:self action:@selector(dateChanged:) forControlEvents:UIControlEventValueChanged];
-            datePicker.frame = CGRectMake(0, 20, 280, 216);
+            datePicker.frame = CGRectMake(0, 30, 280, 216);
             datePicker.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin;
             UIDatePicker *timePicker = [self createDateOrTime:1 withDate:self.currentDate withMinDate:minDate withMaxDate:maxDate];
             [timePicker addTarget:self action:@selector(timeChanged:) forControlEvents:UIControlEventValueChanged];
-            timePicker.frame = CGRectMake(0, 226, 280, 216);
+            timePicker.frame = CGRectMake(0, 236, 280, 216);
             timePicker.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin;
             [supView addSubview:datePicker];
             [supView addSubview:timePicker];
@@ -126,7 +130,7 @@
         {
             supView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 216)];
             UIDatePicker *datePicker = [self createDateOrTime:0 withDate:self.currentDate withMinDate:minDate withMaxDate:maxDate];
-            datePicker.frame = CGRectMake(0, 20, 280, 216);
+            datePicker.frame = CGRectMake(0, 30, 280, 216);
             datePicker.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin;
 
             [supView addSubview:datePicker];
@@ -136,9 +140,31 @@
         {
             supView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 216)];
             UIDatePicker *timePicker = [self createDateOrTime:1 withDate:self.currentDate withMinDate:minDate withMaxDate:maxDate];
-            timePicker.frame = CGRectMake(0, 20, 280, 216);
+            timePicker.frame = CGRectMake(0, 30, 280, 216);
             timePicker.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin;
 
+            [supView addSubview:timePicker];
+        }
+            break;
+            case 3://日期时间及星期几
+        {
+            supView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 442)];
+            UIDatePicker *datePicker = [self createDateOrTime:0 withDate:self.currentDate withMinDate:minDate withMaxDate:maxDate];;
+            [datePicker addTarget:self action:@selector(dateChanged:) forControlEvents:UIControlEventValueChanged];
+            datePicker.frame = CGRectMake(0, 30, 280, 216);
+            datePicker.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin;
+            
+            UILabel *weekLabel = [[UILabel alloc]init];
+            weekLabel.frame = CGRectMake(0, 236, ScreenWidth, 40);
+            weekLabel.text = [self getWeekWith:datePicker];
+            weekLabel.textAlignment = NSTextAlignmentCenter;
+            [supView addSubview:weekLabel];
+            self.weekLabel = weekLabel;
+            UIDatePicker *timePicker = [self createDateOrTime:1 withDate:self.currentDate withMinDate:minDate withMaxDate:maxDate];
+            [timePicker addTarget:self action:@selector(timeChanged:) forControlEvents:UIControlEventValueChanged];
+            timePicker.frame = CGRectMake(0, 262, 280, 216);
+            timePicker.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin;
+            [supView addSubview:datePicker];
             [supView addSubview:timePicker];
         }
             break;
@@ -146,11 +172,25 @@
     supView.clipsToBounds = YES;
     return supView;
 }
+
+- (NSString *)getWeekWith:(UIDatePicker *)dataPicker
+{
+
+    NSDateComponents *comps = [[NSDateComponents alloc] init];
+    NSInteger unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSWeekdayCalendarUnit |
+    NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
+    
+    comps = [dataPicker.calendar components:unitFlags fromDate:dataPicker.date];
+    
+    NSArray * arrWeek=[NSArray arrayWithObjects:@"星期日",@"星期一",@"星期二",@"星期三",@"星期四",@"星期五",@"星期六", nil];
+    return [NSString stringWithFormat:@"%@",[arrWeek objectAtIndex:[comps weekday] - 1]];
+}
 #pragma - mark -
 #pragma - mark 日期时间联动
 - (void)dateChanged:(UIDatePicker *)sender
 {
     [self.tempTimeView setDate:sender.date animated:YES];
+    self.weekLabel.text = [self getWeekWith:sender];
 }
 
 - (void)timeChanged:(UIDatePicker *)sender
