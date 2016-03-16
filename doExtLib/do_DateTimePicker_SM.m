@@ -138,6 +138,41 @@
             break;
         case 2://时间
         {
+            NSDate *currentDate = [NSDate date];
+            NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+            
+            NSInteger unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSWeekdayCalendarUnit |
+            NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
+            
+            NSDateComponents *Curcomps  = [calendar components:unitFlags fromDate:currentDate];
+            double date0 = [[doTextHelper Instance]StrToLong:self.currentDate :0];
+            double date1 = [[doTextHelper Instance]StrToLong:maxDate :0];
+            double date2 = [[doTextHelper Instance]StrToLong:minDate :0];
+            NSDate *valueDate = [NSDate dateWithTimeIntervalSince1970:(date0 / 1000)];
+            NSDate *maDate = [NSDate dateWithTimeIntervalSince1970:(date1 / 1000)];
+            NSDate *miDate = [NSDate dateWithTimeIntervalSince1970:(date2 / 1000)];
+            NSDateComponents *comps0 = [calendar components:unitFlags fromDate:valueDate];
+            NSDateComponents *comps1 = [calendar components:unitFlags fromDate:maDate];
+            NSDateComponents *comps2  = [calendar components:unitFlags fromDate:miDate];
+            [comps0 setYear:Curcomps.year];
+            [comps0 setMonth:Curcomps.month];
+            [comps0 setDay:Curcomps.day];
+            
+            [comps1 setYear:Curcomps.year];
+            [comps1 setMonth:Curcomps.month];
+            [comps1 setDay:Curcomps.day];
+            
+            [comps2 setYear:Curcomps.year];
+            [comps2 setMonth:Curcomps.month];
+            [comps2 setDay:Curcomps.day];
+            
+            valueDate = [calendar dateFromComponents:comps0];
+            maDate = [calendar dateFromComponents:comps1];
+            miDate = [calendar dateFromComponents:comps2];
+            
+            self.currentDate = [NSString stringWithFormat:@"%f",valueDate.timeIntervalSince1970 * 1000];
+            minDate = [NSString stringWithFormat:@"%f",miDate.timeIntervalSince1970 * 1000];
+            maxDate = [NSString stringWithFormat:@"%f",maDate.timeIntervalSince1970 * 1000];
             supView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 216)];
             UIDatePicker *timePicker = [self createDateOrTime:1 withDate:self.currentDate withMinDate:minDate withMaxDate:maxDate];
             timePicker.frame = CGRectMake(0, 30, 280, 216);
