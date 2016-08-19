@@ -151,7 +151,7 @@
     self.backgroundColor = [UIColor whiteColor];
     CGFloat screenW = [UIScreen mainScreen].bounds.size.width;
     CGFloat screenH = [UIScreen mainScreen].bounds.size.height;
-    UIView *shadView = [[UIView alloc]initWithFrame:CGRectMake(0, 20, screenW, screenH - 20)];
+    UIView *shadView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, screenW, screenH)];
     shadView.backgroundColor = [UIColor grayColor];
     shadView.alpha = 0.5;
     UITapGestureRecognizer *shadViewTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(shadViewTap:)];

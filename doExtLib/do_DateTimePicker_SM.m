@@ -114,7 +114,7 @@
         case 0://日期和时间
         {
             supView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 442)];
-            UIDatePicker *datePicker = [self createDateOrTime:0 withDate:self.currentDate withMinDate:minDate withMaxDate:maxDate];;
+            UIDatePicker *datePicker = [self createDateOrTime:0 withDate:self.currentDate withMinDate:minDate withMaxDate:maxDate];
             [datePicker addTarget:self action:@selector(dateChanged:) forControlEvents:UIControlEventValueChanged];
             datePicker.frame = CGRectMake(0, 30, 280, 216);
             datePicker.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin;
