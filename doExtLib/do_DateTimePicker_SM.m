@@ -32,6 +32,25 @@
 @property (nonatomic,strong) UILabel *weekLabel;
 @end
 @implementation do_DateTimePicker_SM
+
+#pragma mark - private method
+
+- (NSDate*)getCurrentDate {
+    NSDate *date = [NSDate date];
+    NSTimeZone *zone = [NSTimeZone systemTimeZone];
+    NSInteger interval = [zone secondsFromGMTForDate: date];
+    NSDate *localeDate = [date  dateByAddingTimeInterval: interval];
+    return localeDate;
+}
+
+- (NSDate*)getDateWithString:(NSString*)dateString {
+    NSTimeZone *timeZone=[NSTimeZone timeZoneWithName:@"UTC+8"];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    formatter.timeZone = timeZone;
+    formatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";// hour大写 表示24小时制
+    return [formatter dateFromString:dateString];
+}
+
 #pragma mark - 方法
 #pragma mark - 同步异步方法的实现
 //同步
@@ -50,10 +69,23 @@
 
     int type = [doJsonHelper GetOneInteger:_dictParas :@"type" :1];
     self.dateType = type;
-    NSString *date = [doJsonHelper GetOneText:_dictParas :@"data" :@""];
+    NSTimeInterval curtimeSince1970 = [[self getCurrentDate] timeIntervalSince1970] * 1000;
+    // maxDate 2099
+    // minDate 1900
+    NSString *date2099String = @"2099-12-31 23:59:59";
+    NSString *date1900String = @"1900-01-01 00:00:00";
+
+    
+    NSDate *date2099 = [self getDateWithString:date2099String];
+    NSDate *date1900 = [self getDateWithString:date1900String];
+    
+    NSTimeInterval time2099Sine1970 = date2099.timeIntervalSince1970 * 1000;
+    NSTimeInterval time1900Sine1970 = date1900.timeIntervalSince1970 * 1000;
+    
+    NSString *date = [doJsonHelper GetOneText:_dictParas :@"data" :[NSString stringWithFormat:@"%f",curtimeSince1970]];
     self.currentDate = date;
-    NSString *maxDate = [doJsonHelper GetOneText:_dictParas :@"maxDate" :@""];
-    NSString *minDate = [doJsonHelper GetOneText:_dictParas :@"minDate" :@""];
+    NSString *maxDate = [doJsonHelper GetOneText:_dictParas :@"maxDate" :[NSString stringWithFormat:@"%f",time2099Sine1970]];
+    NSString *minDate = [doJsonHelper GetOneText:_dictParas :@"minDate" :[NSString stringWithFormat:@"%f",time1900Sine1970]];
     NSString *title = [doJsonHelper GetOneText:_dictParas :@"title" :@""];
     title = [self getTitle:title withType:type];
     NSArray *buttons = [doJsonHelper GetOneArray:_dictParas :@"buttons"];
@@ -78,14 +110,8 @@
     }
     return alView;
 }
-/**
- *  获得title
- *
- *  @param title <#title description#>
- *  @param type  <#type description#>
- *
- *  @return <#return value description#>
- */
+
+//0表示日期及时间，1表示只有日期，2表示只有时间，3表示日期、星期及时间
 - (NSString *)getTitle:(NSString *)title withType:(int)type
 {
     if (title.length > 0) {
@@ -139,10 +165,10 @@
         case 2://时间
         {
             NSDate *currentDate = [NSDate date];
-            NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+            NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
             
-            NSInteger unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSWeekdayCalendarUnit |
-            NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
+            NSInteger unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitWeekday |
+            NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
             
             NSDateComponents *Curcomps  = [calendar components:unitFlags fromDate:currentDate];
             double date0 = [[doTextHelper Instance]StrToLong:self.currentDate :0];
@@ -212,9 +238,8 @@
 {
 
     NSDateComponents *comps = [[NSDateComponents alloc] init];
-    NSInteger unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSWeekdayCalendarUnit |
-    NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
-    
+    NSInteger unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitWeekday |
+    NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
     comps = [dataPicker.calendar components:unitFlags fromDate:dataPicker.date];
     
     NSArray * arrWeek=[NSArray arrayWithObjects:@"星期日",@"星期一",@"星期二",@"星期三",@"星期四",@"星期五",@"星期六", nil];

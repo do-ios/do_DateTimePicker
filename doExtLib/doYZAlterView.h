@@ -15,8 +15,8 @@
 @end
 
 @interface doYZAlterView : UIView
-@property (nonatomic,strong) UIDatePicker *datePickerView;
-@property (nonatomic,strong) UIDatePicker *timePickerView;
+//@property (nonatomic,strong) UIDatePicker *datePickerView;
+//@property (nonatomic,strong) UIDatePicker *timePickerView;
 @property (nonatomic,strong) UIView *contentView;
 @property (nonatomic,assign) int type;
 @property (nonatomic,assign) int buttonsCount;
