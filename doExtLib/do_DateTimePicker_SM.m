@@ -35,18 +35,19 @@
 
 #pragma mark - private method
 
+// 后面用到了NSCanlander , 系统自动加了8个时区, 前面所有的准备时间转化工作都别加时区了, 别动了,看不懂就算了
 - (NSDate*)getCurrentDate {
-    NSDate *date = [NSDate date];
-    NSTimeZone *zone = [NSTimeZone systemTimeZone];
-    NSInteger interval = [zone secondsFromGMTForDate: date];
-    NSDate *localeDate = [date  dateByAddingTimeInterval: interval];
-    return localeDate;
+//    NSDate *date = [NSDate date];
+//    NSTimeZone *zone = [NSTimeZone systemTimeZone];
+//    NSInteger interval = [zone secondsFromGMTForDate: date];
+//    NSDate *localeDate = [date  dateByAddingTimeInterval: interval];
+    return [NSDate date];
 }
 
 - (NSDate*)getDateWithString:(NSString*)dateString {
-    NSTimeZone *timeZone=[NSTimeZone timeZoneWithName:@"UTC+8"];
+//    NSTimeZone *timeZone=[NSTimeZone timeZoneWithName:@"UTC"];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    formatter.timeZone = timeZone;
+//    formatter.timeZone = timeZone;
     formatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";// hour大写 表示24小时制
     return [formatter dateFromString:dateString];
 }
@@ -164,7 +165,7 @@
             break;
         case 2://时间
         {
-            NSDate *currentDate = [NSDate date];
+            NSDate *currentDate = [self getCurrentDate];
             NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
             
             NSInteger unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitWeekday |
@@ -209,7 +210,7 @@
             break;
             case 3://日期时间及星期几
         {
-            supView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 442)];
+            supView = [[UIView alloc]initWithFrame:CGRectMake(1, 0, ScreenWidth, 442)];
             UIDatePicker *datePicker = [self createDateOrTime:0 withDate:self.currentDate withMinDate:minDate withMaxDate:maxDate];;
             [datePicker addTarget:self action:@selector(dateChanged:) forControlEvents:UIControlEventValueChanged];
             datePicker.frame = CGRectMake(0, 30, 280, 216);
@@ -273,48 +274,50 @@
         datePicker.datePickerMode = UIDatePickerModeTime;
         self.tempTimeView = datePicker;
     }
-
-    double max;
-    double min;
-    max = [[doTextHelper alloc]StrToLong:maxDate :0];
-    min = [[doTextHelper alloc]StrToLong:minDate :0];
-    if (max < min) {
-        datePicker.minimumDate = [NSDate dateWithTimeIntervalSince1970:(min / 1000)];
-        datePicker.maximumDate = [NSDate dateWithTimeIntervalSince1970:(4102329600)];
-        if (date.length == 0) {
-            datePicker.date = [NSDate date];
+    if (self.dateType != 2) {
+        double max;
+        double min;
+        max = [[doTextHelper alloc]StrToLong:maxDate :0];
+        min = [[doTextHelper alloc]StrToLong:minDate :0];
+        if (max < min) {
+            datePicker.minimumDate = [NSDate dateWithTimeIntervalSince1970:(min / 1000)];
+            datePicker.maximumDate = [NSDate dateWithTimeIntervalSince1970:(4102329600)];
+            if (date.length == 0) {
+                datePicker.date = [NSDate date];
+                return datePicker;
+            }
+            double currentDate = [[doTextHelper alloc]StrToLong:date :0];
+            
+            datePicker.date = [NSDate dateWithTimeIntervalSince1970:(currentDate / 1000)];
             return datePicker;
         }
-        double currentDate = [[doTextHelper alloc]StrToLong:date :0];
-        
-        datePicker.date = [NSDate dateWithTimeIntervalSince1970:(currentDate / 1000)];
-        return datePicker;
+        if (date.length > 0) {
+            
+            double currentDate = [[doTextHelper alloc]StrToLong:date :0];
+            datePicker.date = [NSDate dateWithTimeIntervalSince1970:(currentDate / 1000)];
+        }
+        else
+        {
+            datePicker.date = [NSDate date];
+        }
+        if (minDate.length > 0) {
+            double min = [[doTextHelper alloc]StrToLong:minDate :0];
+            datePicker.minimumDate = [NSDate dateWithTimeIntervalSince1970:(min / 1000)];
+        }
+        else
+        {
+            datePicker.minimumDate = [NSDate dateWithTimeIntervalSince1970:0];
+        }
+        if (maxDate.length > 0) {
+            double max = [[doTextHelper alloc]StrToLong:maxDate :0];
+            datePicker.maximumDate = [NSDate dateWithTimeIntervalSince1970:(max / 1000)];
+        }
+        else
+        {
+            datePicker.maximumDate = [NSDate dateWithTimeIntervalSince1970:(4102329600)];
+        }
     }
-    if (date.length > 0) {
-        
-        double currentDate = [[doTextHelper alloc]StrToLong:date :0];
-        datePicker.date = [NSDate dateWithTimeIntervalSince1970:(currentDate / 1000)];
-    }
-    else
-    {
-        datePicker.date = [NSDate date];
-    }
-    if (minDate.length > 0) {
-        double min = [[doTextHelper alloc]StrToLong:minDate :0];
-        datePicker.minimumDate = [NSDate dateWithTimeIntervalSince1970:(min / 1000)];
-    }
-    else
-    {
-        datePicker.minimumDate = [NSDate dateWithTimeIntervalSince1970:0];
-    }
-    if (maxDate.length > 0) {
-        double max = [[doTextHelper alloc]StrToLong:maxDate :0];
-        datePicker.maximumDate = [NSDate dateWithTimeIntervalSince1970:(max / 1000)];
-    }
-    else
-    {
-        datePicker.maximumDate = [NSDate dateWithTimeIntervalSince1970:(4102329600)];
-    }
+    
     return datePicker;
 }
 #pragma mark -
