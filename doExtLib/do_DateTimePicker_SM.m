@@ -30,6 +30,7 @@
 @property (nonatomic,strong) UIView *tempView;
 @property (nonatomic,strong) UIAlertView *tempAlView;
 @property (nonatomic,strong) UILabel *weekLabel;
+@property (nonatomic, strong) NSDate *dateForType2AndDataAssign; // type = 2 ,show 方法data赋值时辅助对象
 @end
 @implementation do_DateTimePicker_SM
 
@@ -44,7 +45,7 @@
     return [NSDate date];
 }
 
-- (NSDate*)getDateWithString:(NSString*)dateString {
+- (NSDate*)getDateWithFormatterString:(NSString*)dateString {
 //    NSTimeZone *timeZone=[NSTimeZone timeZoneWithName:@"UTC"];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
 //    formatter.timeZone = timeZone;
@@ -52,6 +53,14 @@
     return [formatter dateFromString:dateString];
 }
 
+/// show方法data参数是否赋值
+- (BOOL)isDataParamAssigned {
+    if ([self.currentDate isEqualToString:[NSString stringWithFormat:@"%f",[[self getCurrentDate] timeIntervalSince1970] * 1000]]) {
+        return false;
+    }else {
+        return true;
+    }
+}
 #pragma mark - 方法
 #pragma mark - 同步异步方法的实现
 //同步
@@ -74,11 +83,11 @@
     // maxDate 2099
     // minDate 1900
     NSString *date2099String = @"2099-12-31 23:59:59";
-    NSString *date1900String = @"1900-01-01 00:00:00";
+    NSString *date1900String = @"1970-01-01 00:00:00";
 
     
-    NSDate *date2099 = [self getDateWithString:date2099String];
-    NSDate *date1900 = [self getDateWithString:date1900String];
+    NSDate *date2099 = [self getDateWithFormatterString:date2099String];
+    NSDate *date1900 = [self getDateWithFormatterString:date1900String];
     
     NSTimeInterval time2099Sine1970 = date2099.timeIntervalSince1970 * 1000;
     NSTimeInterval time1900Sine1970 = date1900.timeIntervalSince1970 * 1000;
@@ -176,6 +185,7 @@
             double date1 = [[doTextHelper Instance]StrToLong:maxDate :0];
             double date2 = [[doTextHelper Instance]StrToLong:minDate :0];
             NSDate *valueDate = [NSDate dateWithTimeIntervalSince1970:(date0 / 1000)];
+            self.dateForType2AndDataAssign = valueDate;
             NSDate *maDate = [NSDate dateWithTimeIntervalSince1970:(date1 / 1000)];
             NSDate *miDate = [NSDate dateWithTimeIntervalSince1970:(date2 / 1000)];
             NSDateComponents *comps0 = [calendar components:unitFlags fromDate:valueDate];
@@ -315,6 +325,10 @@
         else
         {
             datePicker.maximumDate = [NSDate dateWithTimeIntervalSince1970:(4102329600)];
+        }
+    }else {
+        if ([self isDataParamAssigned]) {
+            datePicker.maximumDate = self.dateForType2AndDataAssign;
         }
     }
     
