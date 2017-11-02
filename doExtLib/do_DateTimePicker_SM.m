@@ -328,7 +328,7 @@
         }
     }else {
         if ([self isDataParamAssigned]) {
-            datePicker.maximumDate = self.dateForType2AndDataAssign;
+            [datePicker setDate:self.dateForType2AndDataAssign];
         }
     }
     
